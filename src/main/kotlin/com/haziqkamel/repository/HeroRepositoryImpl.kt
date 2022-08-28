@@ -5,15 +5,16 @@ import com.haziqkamel.models.Hero
 
 const val NEXT_PAGE_KEY = "nextPage"
 const val PREV_PAGE_KEY = "prevPage"
+
 class HeroRepositoryImpl : HeroRepository {
     override val heroes: Map<Int, List<Hero>> by lazy {
-       mapOf(
-           1 to page1,
-           2 to page2,
-           3 to page3,
-           4 to page4,
-           5 to page5
-       )
+        mapOf(
+            1 to page1,
+            2 to page2,
+            3 to page3,
+            4 to page4,
+            5 to page5
+        )
     }
 
     override val page1 = listOf(
@@ -406,23 +407,43 @@ class HeroRepositoryImpl : HeroRepository {
         )
     }
 
-    override suspend fun searchHeroes(name: String): ApiResponse {
-        TODO("Not yet implemented")
+    override suspend fun searchHeroes(name: String?): ApiResponse {
+        return ApiResponse(
+            success = true,
+            message = "Success",
+            heroes = findHeroes(nameQuery = name)
+        )
+    }
+
+    private fun findHeroes(nameQuery: String?): List<Hero> {
+        val founded = mutableListOf<Hero>()
+        return if (!nameQuery.isNullOrEmpty()) {
+            heroes.forEach { (_, heroes) ->
+                heroes.forEach { hero ->
+                    if (hero.name.lowercase().contains(nameQuery.lowercase())) {
+                        founded.add(hero)
+                    }
+                }
+            }
+            founded
+        } else {
+            emptyList()
+        }
     }
 
     private fun calculatePage(page: Int): Map<String, Int?> {
         var prevPage: Int? = page
         var nextPage: Int? = page
 
-        if(page in 1..4) {
+        if (page in 1..4) {
             nextPage = nextPage?.plus(1)
         }
 
-        if(page in 2..5) {
+        if (page in 2..5) {
             prevPage = prevPage?.minus(1)
         }
 
-        if(page == 1) {
+        if (page == 1) {
             prevPage = null
         }
 
