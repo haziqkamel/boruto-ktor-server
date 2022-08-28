@@ -1,0 +1,14 @@
+Ktor - BorutoServer
+
+# Requirements
+1. Java 11
+
+### gradle.properties
+````
+ktorVersion=2.1.0
+kotlinVersion=1.7.10
+logbackVersion=1.2.11
+koinVersion=3.2.0
+kotlin.code.style=official
+
+org.gradle.java.home=C:\\Program Files\\AdoptOpenJDK\\jdk-11.0.11.9-hotspot
