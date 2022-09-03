@@ -124,4 +124,50 @@ class ApplicationTest {
             }
         }
     }
+
+    @ExperimentalSerializationApi
+    @Test
+    fun `access all heroes endpoint, query non existing page number, assert error`() {
+        withTestApplication(moduleFunction = Application::module) {
+            handleRequest(HttpMethod.Get, "/boruto/heroes?page=6").apply {
+                assertEquals(
+                    expected = HttpStatusCode.NotFound,
+                    actual = response.status()
+                )
+                val expected = ApiResponse(
+                    success = false,
+                    message = "Heroes not found.",
+                )
+
+                val actual = Json.decodeFromString<ApiResponse>(response.content.toString())
+                assertEquals(
+                    expected = expected,
+                    actual = actual,
+                )
+            }
+        }
+    }
+
+    @ExperimentalSerializationApi
+    @Test
+    fun `access all heroes endpoint, query invalid page number, assert error`() {
+        withTestApplication(moduleFunction = Application::module) {
+            handleRequest(HttpMethod.Get, "/boruto/heroes?page=invalid").apply {
+                assertEquals(
+                    expected = HttpStatusCode.BadRequest,
+                    actual = response.status()
+                )
+                val expected = ApiResponse(
+                    success = false,
+                    message = "Only numbers are allowed.",
+                )
+
+                val actual = Json.decodeFromString<ApiResponse>(response.content.toString())
+                assertEquals(
+                    expected = expected,
+                    actual = actual,
+                )
+            }
+        }
+    }
 }
