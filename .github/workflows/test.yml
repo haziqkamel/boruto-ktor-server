@@ -9,6 +9,7 @@ jobs:
       - name: Action Install Java
         uses: actions/setup-java@v3
         with:
+          distribution: 'adopt'
           java-version: '11'
       - name: Install dependencies
         run: echo 'Ignored'
