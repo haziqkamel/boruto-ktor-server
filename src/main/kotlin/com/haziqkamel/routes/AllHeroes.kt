@@ -38,7 +38,7 @@ fun Route.getAllHeroes() {
                 message = ApiResponse(
                     success = false,
                     message = "Heroes not found."),
-                status = HttpStatusCode.NotFound
+                status = HttpStatusCode.BadRequest
             )
         }
     }
